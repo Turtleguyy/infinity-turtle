@@ -1,6 +1,6 @@
 $(function() {
-  var call = $.get('https://api.whitehouse.gov/v1/petitions.jsonp?limit=100&callback=?');
-  call.done(function(data) {
+  var url = 'https://api.whitehouse.gov/v1/petitions.jsonp';
+  $.getJSON(url + '?limit=100&offset=0&callback=?', function(data) {
     var turtle = new InfinityTurtle(data.results);
     turtle.promise.progress(function(data) {
       console.log('new page', data);
