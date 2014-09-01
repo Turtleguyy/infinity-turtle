@@ -2,29 +2,42 @@
 
 Automatic data pagination, infinite scrolling style.
 
-## Usage
+## Installation
 
-First, make sure you've got jQuery included in your project, then include the
-infinity turtle files.
+First, you'll need jQuery, so go ahead and download and include him. Then, add `infinity.js` and `infinity.css` to your project.
 
 ```html
-<script type="text/javascript" src="assets/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="assets/infinity.js"></script>
+<link rel="stylesheet" type="text/css" href="vendor/infinity.min.css">
+<script type="text/javascript" src="vendor/infinity.min.js"></script>
 ```
 
-Then...
+## Basic Usage
+
+InfinityTurtle takes an array of data, and paginates it for you. It also has a nifty little deferred you can use to keep track of what's going on.
 
 ```javascript
-new InfinityTurtle
+var data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+var turtle = new InfinityTurtle(data);
+turtle.promise.progress(function(data) {
+  // The given array is the next "page" worth of data.
+  // Use it to render items into your container.
+});
+
+turtle.promise.done(function(data) {
+  // The given array is the last "page" worth of data.
+  // Use it to render items into your container.
+});
 ```
 
-# To contribute
+## Configuration
 
-clone the repo
-cd into the project
-make sure you have the latest version of node and npm installed
-run `npm install -g coffee-script`
-run `coffee -o assets/ -cw src/`
-open up a new terminal window
-run `gem install sass`
-run `sass --watch src:assets`
+# Contributing
+
+Fork the repo and make sure you have the latest version of node and npm installed. From the project directory, run the following lines. You'll need two terminal windows open to do it.
+
+```
+npm install -g coffee-script
+coffee -o assets/ -cw src/
+gem install sass
+sass --watch src:assets
+```
