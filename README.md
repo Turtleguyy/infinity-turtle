@@ -4,7 +4,7 @@ Automatic data pagination, infinite scrolling style.
 
 ## Installation
 
-First, you'll need jQuery, so go ahead and download and include him. Then, add `infinity.js` and `infinity.css` to your project.
+First, you'll need jQuery, so go ahead and download and include him. Then, add `infinity.min.js` and `infinity.min.css` to your project.
 
 ```html
 <link rel="stylesheet" type="text/css" href="vendor/infinity.min.css">
@@ -43,6 +43,10 @@ There are obviously defaults for every option, but they can all be overridden.
 #### `container`
 
 Defaults to `body`, can be any valid jQuery selector. This should be the element that will be containing the pages of data.
+
+#### `loaderClass`
+
+Defaults to an empty string. This is your own custom css class you want added to the loader.
 
 #### `loaderColor`
 
