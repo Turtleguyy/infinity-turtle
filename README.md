@@ -64,7 +64,12 @@ Defaults to `10`, can be any integer. This is the number of items you want per p
 
 Defaults to `50`, can be any value in milliseconds. This is delay between scroll events before we check to see if we need to get the next page of data.
 
-# Contributing
+## Coming Soon
+
+* Ability to pass in a path to a loading image to use instead of one of the built in symbols.
+* Ability to pass in a url to get the data from, instead of needing to have it all preloaded up front.
+
+## Contributing
 
 Fork the repo and make sure you have the latest version of node and npm installed. From the project directory, run the following lines. You'll need two terminal windows open to do it.
 
