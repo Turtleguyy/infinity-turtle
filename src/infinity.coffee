@@ -37,13 +37,13 @@ class InfinityTurtle
         <div class='right' style='#{borderWidth}' />
       </div>
     """
-    @view.append html
+    $(html).appendTo @view
 
   _buildCircleLoader: (borderWidth, classes) ->
     borderTop  = "border-top-color: #{@_options.loaderColor};"
     borderLeft = "border-left-color: #{@_options.loaderColor};"
     inlineCSS  = "style='#{borderWidth} #{borderTop} #{borderLeft}'"
-    @view.append "<div #{classes} #{inlineCSS} />"
+    $("<div #{classes} #{inlineCSS} />").appendTo @view
 
   _checkScrollPosition: ->
     $lastChild = @view.children ':last-child'

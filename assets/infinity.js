@@ -54,7 +54,7 @@
       var borders, html;
       borders = "border-color: " + this._options.loaderColor + ";";
       html = "<div " + classes + " style='" + borders + "'>\n  <div class='left' style='" + borderWidth + "' />\n  <div class='right' style='" + borderWidth + "' />\n</div>";
-      return this.view.append(html);
+      return $(html).appendTo(this.view);
     };
 
     InfinityTurtle.prototype._buildCircleLoader = function(borderWidth, classes) {
@@ -62,7 +62,7 @@
       borderTop = "border-top-color: " + this._options.loaderColor + ";";
       borderLeft = "border-left-color: " + this._options.loaderColor + ";";
       inlineCSS = "style='" + borderWidth + " " + borderTop + " " + borderLeft + "'";
-      return this.view.append("<div " + classes + " " + inlineCSS + " />");
+      return $("<div " + classes + " " + inlineCSS + " />").appendTo(this.view);
     };
 
     InfinityTurtle.prototype._checkScrollPosition = function() {
