@@ -18,9 +18,6 @@ class InfinityTurtle
     @_buildLoader()
     @_loadNextPage 0
 
-    return unless @data.length > @_options.pageSize
-    $(@_options.scrollView).on 'scroll', $.proxy this, '_onContainerScroll'
-
   hideLoader: (fade = no) ->
     if fade then @_loader.fadeOut() else @_loader.hide()
 
@@ -40,13 +37,13 @@ class InfinityTurtle
         <div class='right' style='#{borderWidth}' />
       </div>
     """
-    $ html
+    @view.append html
 
   _buildCircleLoader: (borderWidth, classes) ->
     borderTop  = "border-top-color: #{@_options.loaderColor};"
     borderLeft = "border-left-color: #{@_options.loaderColor};"
     inlineCSS  = "style='#{borderWidth} #{borderTop} #{borderLeft}'"
-    $ "<div #{classes} #{inlineCSS} />"
+    @view.append "<div #{classes} #{inlineCSS} />"
 
   _checkScrollPosition: ->
     $lastChild = @view.children ':last-child'
@@ -75,7 +72,7 @@ class InfinityTurtle
         @promise.resolve pageData
       else
         @promise.notify pageData
-        @view.on 'scroll', $.proxy this, '_onContainerScroll'
+        $(@_options.scrollView).on 'scroll', $.proxy this, '_onContainerScroll'
     , delay
 
   # event handlers

@@ -22,10 +22,6 @@
       this._page = 0;
       this._buildLoader();
       this._loadNextPage(0);
-      if (!(this.data.length > this._options.pageSize)) {
-        return;
-      }
-      $(this._options.scrollView).on('scroll', $.proxy(this, '_onContainerScroll'));
     }
 
     InfinityTurtle.prototype.hideLoader = function(fade) {
@@ -58,7 +54,7 @@
       var borders, html;
       borders = "border-color: " + this._options.loaderColor + ";";
       html = "<div " + classes + " style='" + borders + "'>\n  <div class='left' style='" + borderWidth + "' />\n  <div class='right' style='" + borderWidth + "' />\n</div>";
-      return $(html);
+      return this.view.append(html);
     };
 
     InfinityTurtle.prototype._buildCircleLoader = function(borderWidth, classes) {
@@ -66,7 +62,7 @@
       borderTop = "border-top-color: " + this._options.loaderColor + ";";
       borderLeft = "border-left-color: " + this._options.loaderColor + ";";
       inlineCSS = "style='" + borderWidth + " " + borderTop + " " + borderLeft + "'";
-      return $("<div " + classes + " " + inlineCSS + " />");
+      return this.view.append("<div " + classes + " " + inlineCSS + " />");
     };
 
     InfinityTurtle.prototype._checkScrollPosition = function() {
@@ -104,7 +100,7 @@
             return _this.promise.resolve(pageData);
           } else {
             _this.promise.notify(pageData);
-            return _this.view.on('scroll', $.proxy(_this, '_onContainerScroll'));
+            return $(_this._options.scrollView).on('scroll', $.proxy(_this, '_onContainerScroll'));
           }
         };
       })(this), delay);

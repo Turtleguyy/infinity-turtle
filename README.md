@@ -1,6 +1,6 @@
 # Infinity Turtle
 
-Automatic data pagination, infinite scrolling style. Check out the [demo](http://turtleguyy.github.io/infinity-turtle).
+Automatic data pagination, infinite scrolling style. Check out the [demo](http://turtleguyy.github.io/infinity-turtle/demo/).
 
 ## Installation
 
