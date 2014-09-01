@@ -6,10 +6,10 @@
     InfinityTurtle.prototype.defaults = {
       container: 'body',
       loaderColor: '#ddddff',
+      loaderClass: '',
       loaderSymbol: 'infinity',
-      loaderURL: false,
       loaderWidth: '2px',
-      pageSize: 2,
+      pageSize: 10,
       scrollDelay: 50
     };
 
@@ -19,76 +19,101 @@
       this.view = $(this._options.container);
       this.promise = $.Deferred();
       this._page = 0;
-      this.buildLoader();
-      this.loadNextPage();
+      this._buildLoader();
+      this._loadNextPage(0);
       if (!(this.data.length > this._options.pageSize)) {
         return;
       }
       this.view.on('scroll', $.proxy(this, '_onContainerScroll'));
     }
 
-    InfinityTurtle.prototype.buildLoader = function() {
-      var borderWidth;
+    InfinityTurtle.prototype.hideLoader = function(fade) {
+      if (fade == null) {
+        fade = false;
+      }
+      if (fade) {
+        return this._loader.fadeOut();
+      } else {
+        return this._loader.hide();
+      }
+    };
+
+    InfinityTurtle.prototype._buildLoader = function() {
+      var borderWidth, classes;
+      classes = "" + this._options.loaderSymbol + " " + this._options.loaderClass;
+      classes = "class='infinite-loader " + classes + "'";
       borderWidth = "border-width: " + this._options.loaderWidth + ";";
       return this._loader = (function() {
         switch (this._options.loaderSymbol) {
           case 'infinity':
-            return this._buildInfinityLoader(borderWidth);
+            return this._buildInfinityLoader(borderWidth, classes);
           default:
             return this._buildCircleLoader(borderWidth);
         }
       }).call(this);
     };
 
-    InfinityTurtle.prototype._buildInfinityLoader = function(borderWidth) {
-      var borders, classes, html;
+    InfinityTurtle.prototype._buildInfinityLoader = function(borderWidth, classes) {
+      var borders, html;
       borders = "border-color: " + this._options.loaderColor + ";";
-      classes = "class='infinite-loader " + this._options.loaderSymbol + "'";
       html = "<div " + classes + " style='" + borders + "'>\n  <div class='left' style='" + borderWidth + "' />\n  <div class='right' style='" + borderWidth + "' />\n</div>";
       return $(html);
     };
 
-    InfinityTurtle.prototype._buildCircleLoader = function(borderWidth) {
-      var borderLeft, borderTop, classes, inlineCSS;
+    InfinityTurtle.prototype._buildCircleLoader = function(borderWidth, classes) {
+      var borderLeft, borderTop, inlineCSS;
       borderTop = "border-top-color: " + this._options.loaderColor + ";";
       borderLeft = "border-left-color: " + this._options.loaderColor + ";";
       inlineCSS = "style='" + borderWidth + " " + borderTop + " " + borderLeft + "'";
-      classes = "class='infinite-loader " + this._options.loaderSymbol + "'";
       return $("<div " + classes + " " + inlineCSS + " />");
     };
 
-    InfinityTurtle.prototype.checkScrollPosition = function() {
+    InfinityTurtle.prototype._checkScrollPosition = function() {
       var $lastChild, position;
-      $lastChild = this.view.find(':last-child');
-      position = $lastChild.offset().top + $lastChild.height();
+      $lastChild = this.view.children(':last-child');
+      position = $lastChild.position().top + $lastChild.outerHeight(true);
       position -= this.view.offset().top;
-      console.log(position, this.view.height());
-      if (position <= this.view.height()) {
-        this.view.append(this._loader);
+      if (position === this.view.height()) {
+        this.view.append(this._loader.show());
         this.view.off('scroll');
-        return this.loadNextPage();
+        return this._loadNextPage();
       }
     };
 
-    InfinityTurtle.prototype.loadNextPage = function() {
+    InfinityTurtle.prototype._loadNextPage = function(delay) {
       var index, pageData;
       this._page += 1;
-      this._loader.remove();
       index = this._options.pageSize * (this._page - 1);
       pageData = this.data.slice(index, this._options.pageSize + index);
       if (pageData.length < this._options.pageSize) {
-        return this.promise.resolve(pageData);
+        return this._sendPageData(true, pageData, delay);
       } else {
-        this.promise.notify(pageData);
-        return this.view.on('scroll', $.proxy(this, '_onContainerScroll'));
+        return this._sendPageData(false, pageData, delay);
       }
+    };
+
+    InfinityTurtle.prototype._sendPageData = function(lastPage, pageData, delay) {
+      if (delay == null) {
+        delay = this._options.loaderSymbol === 'infinity' ? 900 : 500;
+      }
+      return setTimeout((function(_this) {
+        return function() {
+          _this.hideLoader();
+          if (lastPage) {
+            return _this.promise.resolve(pageData);
+          } else {
+            _this.promise.notify(pageData);
+            return _this.view.on('scroll', $.proxy(_this, '_onContainerScroll'));
+          }
+        };
+      })(this), delay);
     };
 
     InfinityTurtle.prototype._onContainerScroll = function() {
       clearTimeout(this._timeout);
       return this._timeout = setTimeout((function(_this) {
         return function() {
-          return _this.checkScrollPosition();
+          return _this._checkScrollPosition();
         };
       })(this), this._options.scrollDelay);
     };

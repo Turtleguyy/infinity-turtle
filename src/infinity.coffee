@@ -3,10 +3,10 @@ class InfinityTurtle
   defaults:
     container    : 'body'     # Any valid jQuery selector
     loaderColor  : '#ddddff'  # Any valid CSS color value
+    loaderClass  : ''         # Class to be added to the loader
     loaderSymbol : 'infinity' # infinity or circle
-    loaderURL    : no         # Path to an image to use in place of a symbol
     loaderWidth  : '2px'      # Stroke width of the symbols
-    pageSize     : 2          # Number of items per page
+    pageSize     : 10         # Number of items per page
     scrollDelay  : 50         # Milliseconds between pagination calculations
 
   constructor: (@data, options) ->
@@ -14,21 +14,25 @@ class InfinityTurtle
     @view     = $ @_options.container
     @promise  = $.Deferred()
     @_page    = 0
-    @buildLoader()
-    @loadNextPage()
+    @_buildLoader()
+    @_loadNextPage 0
 
     return unless @data.length > @_options.pageSize
     @view.on 'scroll', $.proxy this, '_onContainerScroll'
 
-  buildLoader: ->
+  hideLoader: (fade = no) ->
+    if fade then @_loader.fadeOut() else @_loader.hide()
+
+  _buildLoader: ->
+    classes     = "#{@_options.loaderSymbol} #{@_options.loaderClass}"
+    classes     = "class='infinite-loader #{classes}'"
     borderWidth = "border-width: #{@_options.loaderWidth};"
-    @_loader = switch @_options.loaderSymbol
-      when 'infinity' then @_buildInfinityLoader borderWidth
+    @_loader    = switch @_options.loaderSymbol
+      when 'infinity' then @_buildInfinityLoader borderWidth, classes
       else @_buildCircleLoader borderWidth
 
-  _buildInfinityLoader: (borderWidth) ->
+  _buildInfinityLoader: (borderWidth, classes) ->
     borders = "border-color: #{@_options.loaderColor};"
-    classes = "class='infinite-loader #{@_options.loaderSymbol}'"
     html    = """
       <div #{classes} style='#{borders}'>
         <div class='left' style='#{borderWidth}' />
@@ -37,34 +41,41 @@ class InfinityTurtle
     """
     $ html
 
-  _buildCircleLoader: (borderWidth) ->
+  _buildCircleLoader: (borderWidth, classes) ->
     borderTop  = "border-top-color: #{@_options.loaderColor};"
     borderLeft = "border-left-color: #{@_options.loaderColor};"
     inlineCSS  = "style='#{borderWidth} #{borderTop} #{borderLeft}'"
-    classes    = "class='infinite-loader #{@_options.loaderSymbol}'"
     $ "<div #{classes} #{inlineCSS} />"
 
-  checkScrollPosition: ->
-    $lastChild = @view.find ':last-child'
-    position   = $lastChild.offset().top + $lastChild.height()
+  _checkScrollPosition: ->
+    $lastChild = @view.children ':last-child'
+    position   = $lastChild.position().top + $lastChild.outerHeight true
     position  -= @view.offset().top
-    console.log position, @view.height()
-    if position <= @view.height()
-      @view.append @_loader
+    if position is @view.height()
+      @view.append @_loader.show()
       @view.off 'scroll'
-      @loadNextPage()
+      @_loadNextPage()
 
-  loadNextPage: ->
+  _loadNextPage: (delay) ->
     @_page += 1
-    @_loader.remove()
     index    = @_options.pageSize * (@_page - 1)
     pageData = @data.slice index, @_options.pageSize + index
 
     if pageData.length < @_options.pageSize
-      @promise.resolve pageData
+      @_sendPageData yes, pageData, delay
     else
-      @promise.notify pageData
-      @view.on 'scroll', $.proxy this, '_onContainerScroll'
+      @_sendPageData no, pageData, delay
+
+  _sendPageData: (lastPage, pageData, delay) ->
+    delay ?= if @_options.loaderSymbol is 'infinity' then 900 else 500
+    setTimeout =>
+      @hideLoader()
+      if lastPage
+        @promise.resolve pageData
+      else
+        @promise.notify pageData
+        @view.on 'scroll', $.proxy this, '_onContainerScroll'
+    , delay
 
   # event handlers
   #
@@ -72,7 +83,7 @@ class InfinityTurtle
   _onContainerScroll: ->
     clearTimeout @_timeout
     @_timeout = setTimeout =>
-      @checkScrollPosition()
+      @_checkScrollPosition()
     , @_options.scrollDelay
 
 window.InfinityTurtle = InfinityTurtle
