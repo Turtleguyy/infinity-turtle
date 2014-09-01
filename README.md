@@ -31,6 +31,27 @@ turtle.promise.done(function(data) {
 
 ## Configuration
 
+You also have the ability to pass in a number of options along with your data. It would look something like this:
+
+```javascript
+var options = {};
+new InfinityTurtle(data, options);
+```
+
+There are obviously defaults for every option, but they can all be overridden.
+
+#### `container`
+
+Defaults to `body`, can be any valid jQuery selector. This should be the element that will be containing the pages of data.
+
+#### `loaderColor`
+
+Defaults to `#ddddff`, can be any valid CSS color value. This is the color of the loader symbol that shows up while preparing the next page of data.
+
+#### `loaderSymbol`
+
+Defaults to `infinity`, can also be `circle`. This is how you choose which of the two symbols you want to use for loading.
+
 # Contributing
 
 Fork the repo and make sure you have the latest version of node and npm installed. From the project directory, run the following lines. You'll need two terminal windows open to do it.
@@ -38,6 +59,9 @@ Fork the repo and make sure you have the latest version of node and npm installe
 ```
 npm install -g coffee-script
 coffee -o assets/ -cw src/
+```
+
+```
 gem install sass
 sass --watch src:assets
 ```
