@@ -8,6 +8,7 @@ class InfinityTurtle
     loaderWidth  : '2px'      # Stroke width of the symbols
     pageSize     : 10         # Number of items per page
     scrollDelay  : 50         # Milliseconds between pagination calculations
+    scrollView   : 'body'     # Any valid jQuery selector
 
   constructor: (@data, options) ->
     @_options = $.extend {}, @defaults, options
@@ -18,7 +19,7 @@ class InfinityTurtle
     @_loadNextPage 0
 
     return unless @data.length > @_options.pageSize
-    @view.on 'scroll', $.proxy this, '_onContainerScroll'
+    $(@_options.scrollView).on 'scroll', $.proxy this, '_onContainerScroll'
 
   hideLoader: (fade = no) ->
     if fade then @_loader.fadeOut() else @_loader.hide()

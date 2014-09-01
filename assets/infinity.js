@@ -10,7 +10,8 @@
       loaderSymbol: 'infinity',
       loaderWidth: '2px',
       pageSize: 10,
-      scrollDelay: 50
+      scrollDelay: 50,
+      scrollView: 'body'
     };
 
     function InfinityTurtle(data, options) {
@@ -24,7 +25,7 @@
       if (!(this.data.length > this._options.pageSize)) {
         return;
       }
-      this.view.on('scroll', $.proxy(this, '_onContainerScroll'));
+      $(this._options.scrollView).on('scroll', $.proxy(this, '_onContainerScroll'));
     }
 
     InfinityTurtle.prototype.hideLoader = function(fade) {
