@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Infinity Turtle by turtleguyy</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Infinity Turtle</h1>
+        <p>Automatic data pagination, infinite scrolling style.</p>
+
+        <p class="view"><a href="https://github.com/turtleguyy/infinity-turtle">View the Project on GitHub <small>turtleguyy/infinity-turtle</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/turtleguyy/infinity-turtle/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/turtleguyy/infinity-turtle/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/turtleguyy/infinity-turtle">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>First, you'll need jQuery, so go ahead and download and include him. Then, add <code>infinity.min.js</code> and <code>infinity.min.css</code> to your project.</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"vendor/infinity.min.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">src=</span><span class="s">"vendor/infinity.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+<h2>
+<a name="basic-usage" class="anchor" href="#basic-usage"><span class="octicon octicon-link"></span></a>Basic Usage</h2>
+
+<p>InfinityTurtle takes an array of data, and paginates it for you. It also has a nifty little deferred you can use to keep track of what's going on.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">turtle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">InfinityTurtle</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="nx">turtle</span><span class="p">.</span><span class="nx">promise</span><span class="p">.</span><span class="nx">progress</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// The given array is the next "page" worth of data.</span>
+  <span class="c1">// Use it to render items into your container.</span>
+<span class="p">});</span>
+
+<span class="nx">turtle</span><span class="p">.</span><span class="nx">promise</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// The given array is the last "page" worth of data.</span>
+  <span class="c1">// Use it to render items into your container.</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h2>
+
+<p>You also have the ability to pass in a number of options along with your data. It would look something like this:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="k">new</span> <span class="nx">InfinityTurtle</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+</pre></div>
+
+<p>There are obviously defaults for every option, but they can all be overridden.</p>
+
+<h4>
+<a name="container" class="anchor" href="#container"><span class="octicon octicon-link"></span></a><code>container</code>
+</h4>
+
+<p>Defaults to <code>body</code>, can be any valid jQuery selector. This should be the element that will be containing the pages of data.</p>
+
+<h4>
+<a name="loaderclass" class="anchor" href="#loaderclass"><span class="octicon octicon-link"></span></a><code>loaderClass</code>
+</h4>
+
+<p>Defaults to an empty string. This is your own custom css class you want added to the loader.</p>
+
+<h4>
+<a name="loadercolor" class="anchor" href="#loadercolor"><span class="octicon octicon-link"></span></a><code>loaderColor</code>
+</h4>
+
+<p>Defaults to <code>#ddddff</code>, can be any valid CSS color value. This is the color of the loader symbol that shows up while preparing the next page of data.</p>
+
+<h4>
+<a name="loadersymbol" class="anchor" href="#loadersymbol"><span class="octicon octicon-link"></span></a><code>loaderSymbol</code>
+</h4>
+
+<p>Defaults to <code>infinity</code>, can also be <code>circle</code>. This is how you choose which of the two symbols you want to use for loading.</p>
+
+<h4>
+<a name="loaderwidth" class="anchor" href="#loaderwidth"><span class="octicon octicon-link"></span></a><code>loaderWidth</code>
+</h4>
+
+<p>Defaults to <code>2px</code>. This is the stroke width of the loader symbol.</p>
+
+<h4>
+<a name="pagesize" class="anchor" href="#pagesize"><span class="octicon octicon-link"></span></a><code>pageSize</code>
+</h4>
+
+<p>Defaults to <code>10</code>, can be any integer. This is the number of items you want per page.</p>
+
+<h4>
+<a name="scrolldelay" class="anchor" href="#scrolldelay"><span class="octicon octicon-link"></span></a><code>scrollDelay</code>
+</h4>
+
+<p>Defaults to <code>50</code>, can be any value in milliseconds. This is delay between scroll events before we check to see if we need to get the next page of data.</p>
+
+<h2>
+<a name="coming-soon" class="anchor" href="#coming-soon"><span class="octicon octicon-link"></span></a>Coming Soon</h2>
+
+<ul>
+<li>Ability to pass in a path to a loading image to use instead of one of the built in symbols.</li>
+<li>Ability to pass in a url to get the data from, instead of needing to have it all preloaded up front.</li>
+</ul><h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>Fork the repo and make sure you have the latest version of node and npm installed. From the project directory, run the following lines. You'll need two terminal windows open to do it.</p>
+
+<pre><code>npm install -g coffee-script
+coffee -o assets/ -cw src/
+</code></pre>
+
+<pre><code>gem install sass
+sass --watch src:assets
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/turtleguyy">turtleguyy</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
