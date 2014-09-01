@@ -52,6 +52,18 @@ Defaults to `#ddddff`, can be any valid CSS color value. This is the color of th
 
 Defaults to `infinity`, can also be `circle`. This is how you choose which of the two symbols you want to use for loading.
 
+#### `loaderWidth`
+
+Defaults to `2px`. This is the stroke width of the loader symbol.
+
+#### `pageSize`
+
+Defaults to `10`, can be any integer. This is the number of items you want per page.
+
+#### `scrollDelay`
+
+Defaults to `50`, can be any value in milliseconds. This is delay between scroll events before we check to see if we need to get the next page of data.
+
 # Contributing
 
 Fork the repo and make sure you have the latest version of node and npm installed. From the project directory, run the following lines. You'll need two terminal windows open to do it.
