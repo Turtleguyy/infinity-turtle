@@ -93,7 +93,7 @@
 // ---------------------
 .infinite-loader
   height: 20px
-  margin: 10px auto
+  margin: 20px auto
   +box-sizing(border-box)
   border-color: '#0bc6d4'
 
@@ -108,7 +108,7 @@
     position: relative
     width: 50px
 
-    &::before, &::after
+    .left, .right
       top: 0
       position: absolute
       width: 20px
@@ -120,14 +120,21 @@
       +transition(border-color 100ms ease)
       border-color: inherit
       border-style: solid
-      border-width: 2px
+      border-width: inherit
 
-    &::before
+    .left
       left: 0
       +animation(fade-borders-left 800ms linear infinite)
       +border-radius(50% 0 50% 50%)
 
-    &::after
+    .right
       left: 50%
       +animation(fade-borders-right 800ms linear infinite)
       +border-radius(50% 50% 50% 0)
+
+.bilbo
+  height: 100px
+  overflow: auto
+
+.frodo, .sam
+  height: 150px
