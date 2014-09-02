@@ -47,7 +47,7 @@ class InfinityTurtle
 
   _checkScrollPosition: ->
     $lastChild = @view.children ':last-child'
-    position   = $lastChild.position().top + $lastChild.outerHeight true
+    position   = $lastChild.offset().top + $lastChild.outerHeight true
     position  -= @view.offset().top
     if position is @view.height()
       @view.append @_loader.show()

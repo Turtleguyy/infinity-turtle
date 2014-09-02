@@ -68,7 +68,7 @@
     InfinityTurtle.prototype._checkScrollPosition = function() {
       var $lastChild, position;
       $lastChild = this.view.children(':last-child');
-      position = $lastChild.position().top + $lastChild.outerHeight(true);
+      position = $lastChild.offset().top + $lastChild.outerHeight(true);
       position -= this.view.offset().top;
       if (position === this.view.height()) {
         this.view.append(this._loader.show());

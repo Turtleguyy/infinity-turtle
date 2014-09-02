@@ -70,7 +70,7 @@ Defaults to `50`, can be any value in milliseconds. This is delay between scroll
 
 #### `scrollView`
 
-Defaults to `body`, can be any valid jQuery selector. This should be the element that will be scrolling.
+Defaults to `body`, can be any valid jQuery selector. This should be the element that will be scrolling. This element *must* have a defined `height` and `overflow: auto` set.
 
 ## Coming Soon
 
