@@ -2,7 +2,8 @@ $(function() {
   var url = 'https://api.whitehouse.gov/v1/petitions.jsonp';
   $.getJSON(url + '?limit=100&offset=0&callback=?', function(data) {
     var options = {
-      container: 'section'
+      container: 'section',
+      scrollView: '.wrapper'
     };
 
     var turtle = new InfinityTurtle(data.results, options);

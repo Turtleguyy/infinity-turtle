@@ -46,8 +46,14 @@ a small {
 }
 
 .wrapper {
+  top: 50px;
+  right: 50px;
+  bottom: 50px;
+  left: 50px;
+  position: absolute;
   width:860px;
   margin:0 auto;
+  overflow: auto
 }
 
 blockquote {
