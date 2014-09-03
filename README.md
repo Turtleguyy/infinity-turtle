@@ -70,7 +70,7 @@ Defaults to `50`, can be any value in milliseconds. This is delay between scroll
 
 #### `scrollView`
 
-Defaults to `body`, can be any valid jQuery selector. This should be the element that will be scrolling. This element *must* have a defined `height` and `overflow: auto` set.
+Defaults to the `container`, can be any valid jQuery selector. This should be the element that will be scrolling. This element *must* have a defined `height` and `overflow: auto` set.
 
 ## Coming Soon
 
@@ -79,7 +79,12 @@ Defaults to `body`, can be any valid jQuery selector. This should be the element
 
 ## Contributing
 
-Fork the repo and make sure you have the latest version of node and npm installed. From the project directory, run the following lines. You'll need two terminal windows open to do it.
+Fork the repo and make sure you have the latest version of node and npm installed. From the project directory, run the following lines. You'll need three terminal windows open to do it.
+
+```
+npm install -g http-server
+http-server
+```
 
 ```
 npm install -g coffee-script
