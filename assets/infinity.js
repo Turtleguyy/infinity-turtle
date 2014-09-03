@@ -11,15 +11,19 @@
       loaderWidth: '2px',
       pageSize: 10,
       scrollDelay: 50,
-      scrollView: 'body'
+      scrollView: null
     };
 
     function InfinityTurtle(data, options) {
+      var _base;
       this.data = data;
       this._options = $.extend({}, this.defaults, options);
-      this.view = $(this._options.container);
+      if ((_base = this._options).scrollView == null) {
+        _base.scrollView = this._options.container;
+      }
+      this.container = $(this._options.container);
+      this.view = $(this._options.scrollView);
       this.promise = $.Deferred();
-      this._page = 0;
       this._buildLoader();
       this._loadNextPage(0);
     }
@@ -54,7 +58,7 @@
       var borders, html;
       borders = "border-color: " + this._options.loaderColor + ";";
       html = "<div " + classes + " style='" + borders + "'>\n  <div class='left' style='" + borderWidth + "' />\n  <div class='right' style='" + borderWidth + "' />\n</div>";
-      return $(html).appendTo(this.view);
+      return $(html).appendTo(this.container);
     };
 
     InfinityTurtle.prototype._buildCircleLoader = function(borderWidth, classes) {
@@ -62,23 +66,40 @@
       borderTop = "border-top-color: " + this._options.loaderColor + ";";
       borderLeft = "border-left-color: " + this._options.loaderColor + ";";
       inlineCSS = "style='" + borderWidth + " " + borderTop + " " + borderLeft + "'";
-      return $("<div " + classes + " " + inlineCSS + " />").appendTo(this.view);
+      return $("<div " + classes + " " + inlineCSS + " />").appendTo(this.container);
     };
 
     InfinityTurtle.prototype._checkScrollPosition = function() {
-      var $lastChild, position;
-      $lastChild = this.view.children(':last-child');
-      position = $lastChild.offset().top + $lastChild.outerHeight(true);
-      position -= this.view.offset().top;
-      if (position === this.view.height()) {
-        this.view.append(this._loader.show());
+      var loadNextPage, sameElements;
+      sameElements = this._options.container === this._options.scrollView;
+      loadNextPage = sameElements ? this._checkContainer() : this._checkView();
+      if (loadNextPage) {
         this.view.off('scroll');
+        this.container.append(this._loader.show());
         return this._loadNextPage();
       }
     };
 
+    InfinityTurtle.prototype._checkContainer = function() {
+      var $lastChild, position;
+      $lastChild = this.container.children(':last-child');
+      position = $lastChild.offset().top + $lastChild.outerHeight(true);
+      position -= this.view.offset().top;
+      return position <= this.view.outerHeight(false);
+    };
+
+    InfinityTurtle.prototype._checkView = function() {
+      var height, position;
+      height = this.container.outerHeight(true);
+      position = this.container.position().top;
+      return height + position <= this.view.outerHeight(true);
+    };
+
     InfinityTurtle.prototype._loadNextPage = function(delay) {
       var index, pageData;
+      if (this._page == null) {
+        this._page = 0;
+      }
       this._page += 1;
       index = this._options.pageSize * (this._page - 1);
       pageData = this.data.slice(index, this._options.pageSize + index);
@@ -100,7 +121,7 @@
             return _this.promise.resolve(pageData);
           } else {
             _this.promise.notify(pageData);
-            return $(_this._options.scrollView).on('scroll', $.proxy(_this, '_onContainerScroll'));
+            return _this.view.on('scroll', $.proxy(_this, '_onContainerScroll'));
           }
         };
       })(this), delay);
