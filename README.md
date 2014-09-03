@@ -40,35 +40,35 @@ new InfinityTurtle(data, options);
 
 There are obviously defaults for every option, but they can all be overridden.
 
-#### `container`
+`container`
 
 Defaults to `body`, can be any valid jQuery selector. This should be the element that will be containing the pages of data.
 
-#### `loaderClass`
+`loaderClass`
 
 Defaults to an empty string. This is your own custom css class you want added to the loader.
 
-#### `loaderColor`
+`loaderColor`
 
 Defaults to `#ddddff`, can be any valid CSS color value. This is the color of the loader symbol that shows up while preparing the next page of data.
 
-#### `loaderSymbol`
+`loaderSymbol`
 
 Defaults to `infinity`, can also be `circle`. This is how you choose which of the two symbols you want to use for loading.
 
-#### `loaderWidth`
+`loaderWidth`
 
 Defaults to `2px`. This is the stroke width of the loader symbol.
 
-#### `pageSize`
+`pageSize`
 
 Defaults to `10`, can be any integer. This is the number of items you want per page.
 
-#### `scrollDelay`
+`scrollDelay`
 
 Defaults to `50`, can be any value in milliseconds. This is delay between scroll events before we check to see if we need to get the next page of data.
 
-#### `scrollView`
+`scrollView`
 
 Defaults to the `container`, can be any valid jQuery selector. This should be the element that will be scrolling. This element *must* have a defined `height` and `overflow: auto` set.
 
